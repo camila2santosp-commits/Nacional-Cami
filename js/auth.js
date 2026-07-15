@@ -148,14 +148,17 @@ const Auth = {
         }
     },
 
-    // Llama a YouTube API
+    // Llama a YouTube API (sin autenticación, usando API key)
     async youtubeAPI(method, params) {
-        if (!this.accessToken) {
-            console.error('No hay token de autenticación');
+        const apiKey = Storage.getConnectors().youtubeApiKey;
+        if (!apiKey) {
+            console.error('No hay API key de YouTube configurada');
             return null;
         }
 
         const url = new URL('https://www.googleapis.com/youtube/v3/' + params.path);
+        url.searchParams.append('key', apiKey);
+
         if (params.query) {
             Object.entries(params.query).forEach(([key, value]) => {
                 url.searchParams.append(key, value);
@@ -166,7 +169,7 @@ const Auth = {
             const response = await fetch(url, {
                 method: method,
                 headers: {
-                    'Authorization': `Bearer ${this.accessToken}`
+                    'Content-Type': 'application/json'
                 }
             });
 
@@ -179,6 +182,35 @@ const Auth = {
             console.error('Error en YouTube API:', error);
             return null;
         }
+    },
+
+    // Buscar videos en YouTube
+    async searchYoutubeVideos(query, channelId) {
+        return this.youtubeAPI('GET', {
+            path: 'search',
+            query: {
+                part: 'snippet',
+                q: query,
+                channelId: channelId,
+                type: 'video',
+                maxResults: 10,
+                order: 'relevance'
+            }
+        });
+    },
+
+    // Obtener videos del canal
+    async getChannelVideos(channelId) {
+        return this.youtubeAPI('GET', {
+            path: 'search',
+            query: {
+                part: 'snippet',
+                channelId: channelId,
+                type: 'video',
+                maxResults: 50,
+                order: 'date'
+            }
+        });
     }
 };
 
