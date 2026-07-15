@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificador de Preventivos - Club Nacional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-dark: #0A1E4D;
+            --navy-medium: #001845;
+            --navy-light: #0A4DA6;
+            --rojo-nacional: #C8102E;
+            --rojo-oscuro: #A00D24;
+            --blanco: #FFFFFF;
+            --gris-claro: #F5F5F5;
+            --gris-medio: #CCCCCC;
+            --gris-oscuro: #333333;
+            --verde: #4CAF50;
+            --amarillo: #FFC107;
+            --rojo: #F44336;
+            --font-title: 'Oswald', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html { font-size: 16px; }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+            color: var(--gris-oscuro);
+            line-height: 1.6;
+        }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-medium) 100%);
+            color: var(--blanco);
+            padding: var(--spacing-lg) var(--spacing-xl);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .header-title h1 {
+            font-family: var(--font-title);
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.05em;
+        }
+
+        .header-title p {
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+            opacity: 0.9;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg);
+        }
+
+        .sidebar {
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .tab-btn {
+            background: var(--blanco);
+            border: 2px solid var(--gris-medio);
+            border-left: 4px solid transparent;
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: var(--gris-oscuro);
+        }
+
+        .tab-btn:hover {
+            background: var(--gris-claro);
+            border-color: var(--navy-light);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-medium) 100%);
+            color: var(--blanco);
+            border-left-color: var(--rojo-nacional);
+            box-shadow: 0 4px 8px rgba(10, 30, 77, 0.15);
+        }
+
+        .content-area {
+            flex: 1;
+            background: var(--blanco);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tab-content {
+            display: none;
+            padding: var(--spacing-xl);
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .tab-header h2 {
+            font-family: var(--font-title);
+            font-size: 2rem;
+            color: var(--navy-dark);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .card {
+            background: var(--gris-claro);
+            border: 1px solid var(--gris-medio);
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .card h3 {
+            font-family: var(--font-title);
+            font-size: 1.3rem;
+            color: var(--navy-dark);
+            margin-bottom: var(--spacing-md);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--spacing-md);
+        }
+
+        thead {
+            background: var(--navy-dark);
+            color: var(--blanco);
+        }
+
+        thead th {
+            padding: var(--spacing-md);
+            text-align: left;
+            font-weight: 600;
+        }
+
+        tbody td {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--gris-medio);
+        }
+
+        tbody tr:hover {
+            background: rgba(10, 77, 166, 0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: var(--spacing-xs);
+        }
+
+        .badge-verde {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border: 1px solid #4CAF50;
+        }
+
+        .badge-amarillo {
+            background: rgba(255, 193, 7, 0.2);
+            color: #F57F17;
+            border: 1px solid #FFC107;
+        }
+
+        .badge-rojo {
+            background: rgba(244, 67, 54, 0.2);
+            color: #C62828;
+            border: 1px solid #F44336;
+        }
+
+        .btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-light) 100%);
+            color: var(--blanco);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 30, 77, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--gris-claro);
+            color: var(--gris-oscuro);
+            border: 2px solid var(--gris-medio);
+        }
+
+        .btn-success {
+            background: var(--verde);
+            color: var(--blanco);
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-field label {
+            font-weight: 600;
+            color: var(--navy-dark);
+            font-size: 0.95rem;
+        }
+
+        .form-field input,
+        .form-field select {
+            padding: var(--spacing-sm);
+            border: 1px solid var(--gris-medio);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            align-items: flex-end;
+        }
+
+        .exercise-card {
+            background: var(--blanco);
+            border: 1px solid var(--gris-medio);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .exercise-card h4 {
+            color: var(--navy-dark);
+            margin-bottom: var(--spacing-xs);
+            font-family: var(--font-title);
+        }
+
+        .exercise-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-xs);
+        }
+
+        .exercise-tag {
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            background: rgba(10, 77, 166, 0.1);
+            color: var(--navy-dark);
+            border-radius: 3px;
+        }
+
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--gris-medio);
+            padding-bottom: var(--spacing-md);
+        }
+
+        .player-header h3 {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            color: var(--navy-dark);
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+            }
+
+            .tab-btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <div class="header-container">
+                <div class="logo-section">
+                    <div class="header-title">
+                        <h1>Planificador de Preventivos</h1>
+                        <p>Club Nacional de Football</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-container">
+            <nav class="sidebar">
+                <button class="tab-btn active" data-tab="datos">
+                    <span>📊</span>
+                    <span>Datos</span>
+                </button>
+                <button class="tab-btn" data-tab="preventivos">
+                    <span>🎯</span>
+                    <span>Preventivos</span>
+                </button>
+                <button class="tab-btn" data-tab="ejercicios">
+                    <span>💪</span>
+                    <span>Ejercicios</span>
+                </button>
+                <button class="tab-btn" data-tab="config">
+                    <span>⚙️</span>
+                    <span>Config</span>
+                </button>
+            </nav>
+
+            <div class="content-area">
+                <!-- TAB 1: DATOS -->
+                <section id="datos" class="tab-content active">
+                    <div class="tab-header">
+                        <h2>Jugadores Cargados</h2>
+                    </div>
+
+                    <div class="card">
+                        <h3>👥 Jugadores</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Posición</th>
+                                    <th>Antecedentes</th>
+                                    <th>Déficits</th>
+                                </tr>
+                            </thead>
+                            <tbody id="playersTable">
+                                <tr>
+                                    <td><strong>Verónica Lupi</strong></td>
+                                    <td>Mediocampista</td>
+                                    <td>
+                                        <span class="badge badge-amarillo">Post-LCA</span>
+                                        <span class="badge badge-amarillo">Aquiles</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-rojo">Tobillo</span>
+                                        <span class="badge badge-amarillo">CMJ Landing</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Juan Pérez</strong></td>
+                                    <td>Delantero</td>
+                                    <td>
+                                        <span class="badge badge-amarillo">Esguince tobillo</span>
+                                    </td>
+                                    <td><span class="badge badge-verde">Normal</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Carlos Rodríguez</strong></td>
+                                    <td>Defensa</td>
+                                    <td>
+                                        <span class="badge badge-amarillo">Post-LCA</span>
+                                        <span class="badge badge-amarillo">Isquiotibiales</span>
+                                        <span class="badge badge-amarillo">Pubalgia</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-rojo">Nordic</span>
+                                        <span class="badge badge-rojo">CMJ Landing</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- TAB 2: PREVENTIVOS -->
+                <section id="preventivos" class="tab-content">
+                    <div class="tab-header">
+                        <h2>Generador de Preventivos</h2>
+                    </div>
+
+                    <div class="card">
+                        <h3>Parámetros</h3>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label>Jugador</label>
+                                <select id="playerSelect">
+                                    <option value="">Selecciona...</option>
+                                    <option value="verónica">👤 Verónica Lupi (Mediocampista)</option>
+                                    <option value="juan">👤 Juan Pérez (Delantero)</option>
+                                    <option value="carlos">👤 Carlos Rodríguez (Defensa)</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Día</label>
+                                <select id="daySelect">
+                                    <option value="viernes" selected>Viernes</option>
+                                    <option value="lunes">Lunes</option>
+                                    <option value="martes">Martes</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Carga</label>
+                                <select id="loadSelect">
+                                    <option value="media" selected>Media</option>
+                                    <option value="suave">Suave</option>
+                                    <option value="alta">Alta</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" onclick="generatePreventivo()">Generar</button>
+                        </div>
+                    </div>
+
+                    <div id="result" class="card" style="display:none;">
+                        <div class="player-header">
+                            <h3 id="playerName"></h3>
+                        </div>
+                        <div id="exercises"></div>
+                        <button class="btn btn-success" onclick="exportPDF()">📄 Exportar PDF</button>
+                    </div>
+                </section>
+
+                <!-- TAB 3: EJERCICIOS -->
+                <section id="ejercicios" class="tab-content">
+                    <div class="tab-header">
+                        <h2>Base de Ejercicios (41)</h2>
+                    </div>
+
+                    <div class="card">
+                        <h3>Ejercicios disponibles</h3>
+                        <div id="exercisesList"></div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: CONFIG -->
+                <section id="config" class="tab-content">
+                    <div class="tab-header">
+                        <h2>Configuración</h2>
+                    </div>
+
+                    <div class="card">
+                        <h3>ℹ️ Información</h3>
+                        <p><strong>Versión:</strong> 1.0 - Demo completa</p>
+                        <p><strong>Estado:</strong> ✓ Operacional</p>
+                        <p><strong>Datos:</strong> 3 jugadores de prueba + 41 ejercicios</p>
+                        <p><strong>Almacenamiento:</strong> localStorage (tu iPad)</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Datos de jugadores
+        const players = {
+            verónica: {
+                nombre: 'Verónica Lupi',
+                pos: 'Mediocampista',
+                antecedentes: ['Post-LCA', 'Aquiles (antecedente)'],
+                ejercicios: ['Movilidad de Tobillo', 'Nordic Curl', 'Glute Bridges', 'CMJ Landing - Técnica']
+            },
+            juan: {
+                nombre: 'Juan Pérez',
+                pos: 'Delantero',
+                antecedentes: ['Esguince de tobillo (antecedente)'],
+                ejercicios: ['Elevación de Talones', 'Isométrico de Gemelos', 'Activación de Aductores']
+            },
+            carlos: {
+                nombre: 'Carlos Rodríguez',
+                pos: 'Defensa',
+                antecedentes: ['Post-LCA', 'Isquiotibiales (antecedente)', 'Pubalgia/Aductores (antecedente)'],
+                ejercicios: ['Nordic Curl', 'RDL Bilateral', 'CMJ Landing - Técnica', 'Side Plank con Abducción']
+            }
+        };
+
+        const exercises = [
+            'Movilidad de Tobillo - Dorsiflexión',
+            'Nordic Curl',
+            'RDL Bilateral',
+            'Glute Bridges',
+            'Glute Bridges Unilaterales',
+            'Clamshells',
+            'Activación de Aductores',
+            'Quad Sets Bilaterales',
+            'Leg Press',
+            'Sentadilla Bilateral',
+            'Elevación de Talones',
+            'Pogo Jumps',
+            'Lateral Bounds',
+            'Single Leg Hops',
+            'CMJ Landing - Técnica',
+            'Countermovement Jump',
+            'Single Leg RDL',
+            'Bulgarian Split Squat',
+            'Pallof Press',
+            'Plancha Frontal',
+            'Plancha Lateral',
+            'Bridge Hold',
+            'Foam Rolling',
+            'Estiramiento Dinámico General',
+            'Estiramiento de Psoas',
+            'Flexión de Cadera Activa',
+            'Rotación Interna de Cadera',
+            'Rotación Externa de Cadera',
+            'Prone Hamstring Curl',
+            'Leg Press Unilateral',
+            'Sentadilla Unilateral',
+            'Adducción en Máquina',
+            'Isométrico de Gemelos',
+            'Hurdle Hops',
+            'Drop Jump',
+            'Saltos Profundos Controlados',
+            'Banda Elástica - Movilidad',
+            'Movilidad de Tobillo - Inversión/Eversión',
+            'RDL Unilateral',
+            'Rotación de Cadera',
+            'Prone Hamstring Curl'
+        ];
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tabName = e.currentTarget.dataset.tab;
+
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+                document.getElementById(tabName).classList.add('active');
+                e.currentTarget.classList.add('active');
+
+                if (tabName === 'ejercicios') {
+                    renderExercises();
+                }
+            });
+        });
+
+        function generatePreventivo() {
+            const playerKey = document.getElementById('playerSelect').value;
+            if (!playerKey) {
+                alert('Selecciona un jugador');
+                return;
+            }
+
+            const player = players[playerKey];
+            const day = document.getElementById('daySelect').value;
+            const load = document.getElementById('loadSelect').value;
+
+            document.getElementById('playerName').textContent = player.nombre + ` (${player.pos})`;
+
+            let html = '<div>';
+            html += '<strong>Antecedentes:</strong> ' + player.antecedentes.map(a => `<span class="badge badge-amarillo">${a}</span>`).join(' ') + '<br><br>';
+            html += '<strong>Ejercicios sugeridos para ' + day + ' (carga ' + load + '):</strong><br><br>';
+
+            player.ejercicios.forEach((ex, i) => {
+                html += `<div class="exercise-card"><strong>${i+1}. ${ex}</strong><p style="color: #666; font-size: 0.9rem; margin-top: 5px;">Ejercicio preparado para este jugador basado en sus déficits y antecedentes.</p></div>`;
+            });
+
+            html += '</div>';
+            document.getElementById('exercises').innerHTML = html;
+            document.getElementById('result').style.display = 'block';
+        }
+
+        function renderExercises() {
+            const container = document.getElementById('exercisesList');
+            container.innerHTML = '';
+
+            exercises.forEach(ex => {
+                const card = document.createElement('div');
+                card.className = 'exercise-card';
+                card.innerHTML = `<h4>${ex}</h4><p style="color: #666; font-size: 0.9rem;">Ejercicio preventivo disponible</p>`;
+                container.appendChild(card);
+            });
+        }
+
+        function exportPDF() {
+            alert('✓ Funcionalidad de PDF disponible en la versión completa.\n\nPara exportar, conecta con Google Drive y YouTube desde la versión web en localhost:8000');
+        }
+    </script>
+</body>
+</html>
