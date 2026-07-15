@@ -610,13 +610,21 @@ const App = {
     saveConnectors() {
         const driveId = document.getElementById('driveFolderId').value.trim();
         const youtubeId = document.getElementById('youtubeChannelId').value.trim();
+        const youtubeApiKey = document.getElementById('youtubeApiKey').value.trim();
+
+        if (!youtubeApiKey) {
+            document.getElementById('connectorsStatus').innerHTML = '⚠️ Necesitas ingresar la API Key de YouTube para usar videos';
+            document.getElementById('connectorsStatus').style.color = '#F57F17';
+            return;
+        }
 
         const connectors = Storage.getConnectors();
         connectors.googleDriveFolderId = driveId;
         connectors.youtubeChannelId = youtubeId;
+        connectors.youtubeApiKey = youtubeApiKey;
         Storage.saveConnectors(connectors);
 
-        document.getElementById('connectorsStatus').innerHTML = '✓ Conectores guardados correctamente';
+        document.getElementById('connectorsStatus').innerHTML = '✓ Conectores guardados correctamente. YouTube activado.';
         document.getElementById('connectorsStatus').style.color = '#4CAF50';
     },
 
@@ -687,6 +695,57 @@ const App = {
                 </div>
             </div>
         `;
+    },
+
+    // Buscar videos en YouTube
+    async searchYoutubeVideos() {
+        const query = document.getElementById('exYoutubeSearch').value.trim();
+        const connectors = Storage.getConnectors();
+
+        if (!query) {
+            alert('Ingresa el nombre del ejercicio a buscar');
+            return;
+        }
+
+        if (!connectors.youtubeApiKey) {
+            alert('❌ Necesitas configurar la API Key de YouTube en Config → Conectores');
+            return;
+        }
+
+        if (!connectors.youtubeChannelId) {
+            alert('❌ Necesitas configurar el ID de tu canal de YouTube en Config → Conectores');
+            return;
+        }
+
+        document.getElementById('youtubeSearchResults').innerHTML = '⏳ Buscando en tu canal...';
+
+        const results = await Auth.searchYoutubeVideos(query, connectors.youtubeChannelId);
+
+        if (!results || !results.items) {
+            document.getElementById('youtubeSearchResults').innerHTML = '❌ No se encontraron videos. Verifica que tu API Key y Canal ID sean correctos.';
+            return;
+        }
+
+        let html = '<div style="background: #f9f9f9; padding: 10px; border-radius: 6px;">';
+        html += `<strong>📹 Encontrados: ${results.items.length} video${results.items.length !== 1 ? 's' : ''}</strong><br><br>`;
+
+        if (results.items.length === 0) {
+            html += 'No hay videos que coincidan con tu búsqueda.';
+        } else {
+            results.items.forEach(item => {
+                const videoId = item.id.videoId;
+                const title = item.snippet.title;
+                html += `
+                    <div style="padding: 8px; margin-bottom: 8px; background: white; border-radius: 4px; cursor: pointer; border: 1px solid #ddd; hover">
+                        <div style="font-size: 0.9rem; font-weight: 600;">${title}</div>
+                        <button type="button" onclick="document.getElementById('exYoutubeId').value = '${videoId}'; document.getElementById('youtubeSearchResults').innerHTML = '✓ Video seleccionado: ${title}';" class="btn btn-primary" style="margin-top: 5px; font-size: 0.85rem; padding: 4px 8px;">✓ Seleccionar</button>
+                    </div>
+                `;
+            });
+        }
+
+        html += '</div>';
+        document.getElementById('youtubeSearchResults').innerHTML = html;
     }
 };
 

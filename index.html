@@ -271,20 +271,41 @@
 
                         <!-- Google Drive Settings -->
                         <div class="card">
-                            <h3>🔧 Conectores</h3>
-                            <p>Configurar conectores de Google Drive y YouTube</p>
+                            <h3>🔧 Conectores - Google Drive & YouTube</h3>
+                            <p>Configurar conectores para sincronizar evaluaciones y videos</p>
+
                             <div class="form-field">
                                 <label for="driveFolderId">ID Carpeta Google Drive</label>
                                 <input type="text" id="driveFolderId" placeholder="Pega aquí el ID de tu carpeta Drive">
                                 <small>Formato: 1a2b3c4d5e6f7g8h9i0j</small>
                             </div>
+
                             <div class="form-field">
                                 <label for="youtubeChannelId">ID Canal YouTube</label>
                                 <input type="text" id="youtubeChannelId" placeholder="Pega aquí el ID de tu canal">
                                 <small>Formato: UCxxxxxxxxxxxxxxx</small>
                             </div>
+
+                            <div class="form-field">
+                                <label for="youtubeApiKey">API Key de YouTube Data API v3</label>
+                                <input type="text" id="youtubeApiKey" placeholder="Pega aquí tu API key">
+                                <small>Obtén en: <a href="https://console.cloud.google.com" target="_blank" style="color: #0A4DA6;">Google Cloud Console</a></small>
+                            </div>
+
                             <button id="saveConnectorsBtn" class="btn btn-primary">Guardar Conectores</button>
                             <div id="connectorsStatus"></div>
+
+                            <div style="margin-top: 20px; padding: 15px; background: rgba(76, 175, 80, 0.1); border: 1px solid #4CAF50; border-radius: 6px; color: #2E7D32; font-size: 0.9rem;">
+                                <strong>📌 Instrucciones rápidas:</strong>
+                                <ol style="margin-left: 20px; margin-top: 10px;">
+                                    <li>Ve a <a href="https://console.cloud.google.com" target="_blank" style="color: #0A4DA6;">Google Cloud Console</a></li>
+                                    <li>Crea un proyecto nuevo (si no tienes)</li>
+                                    <li>Habilita "YouTube Data API v3"</li>
+                                    <li>Ve a Credenciales → Crear → API Key</li>
+                                    <li>Copia la API Key y pégala arriba</li>
+                                    <li>¡Listo! Podrás buscar y ver videos de tu canal</li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -337,6 +358,15 @@
                 <div class="form-field">
                     <label>Video YouTube ID (opcional)</label>
                     <input type="text" id="exYoutubeId" placeholder="dQw4w9WgXcQ">
+                    <small>Ej: dQw4w9WgXcQ (la parte después de watch?v=)</small>
+                </div>
+                <div class="form-field">
+                    <label>O busca un video en tu canal</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="exYoutubeSearch" placeholder="Busca por nombre (ej: 'Nordic Curl')">
+                        <button type="button" onclick="App.searchYoutubeVideos()" class="btn btn-secondary" style="flex-shrink: 0;">🔍 Buscar</button>
+                    </div>
+                    <div id="youtubeSearchResults" style="margin-top: 10px;"></div>
                 </div>
                 <div class="form-field">
                     <label>SVG Diagrama (opcional)</label>
