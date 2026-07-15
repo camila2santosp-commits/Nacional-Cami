@@ -5,7 +5,7 @@ const Auth = {
 
     // Configuración (será completada con datos reales)
     config: {
-        clientId: '', // Se completará con el real
+        clientId: '80822067233-s40dkcgksulmqnl9itf15ait4pdrephm.apps.googleusercontent.com',
         redirectUri: window.location.origin,
         scopes: [
             'https://www.googleapis.com/auth/drive.readonly',
