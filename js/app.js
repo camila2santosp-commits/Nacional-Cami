@@ -151,31 +151,91 @@ const App = {
         statusDiv.innerHTML = '⏳ Procesando archivo...';
 
         Parser.parseExcelFile(file)
-            .then(players => {
-                // Detectar déficits
-                players = players.map(p => {
-                    p.detectedDeficits = Logic.detectDeficits(p.evaluationData || {});
-                    return p;
-                });
-
-                // Agregar a estado
-                this.state.players = [...this.state.players, ...players];
-                Storage.savePlayers(this.state.players);
-
-                // Actualizar UI
-                this.renderPlayersList();
-                this.renderPlayerSelect();
-
-                statusDiv.innerHTML = `✓ ${players.length} jugador${players.length > 1 ? 'es' : ''} cargados exitosamente`;
-                statusDiv.style.color = '#4CAF50';
-
-                this.updateStats();
+            .then(result => {
+                // Si hay múltiples hojas, mostrar selector
+                if (result.sheets.length > 1) {
+                    this.showSheetSelector(result);
+                } else {
+                    // Si hay una sola hoja, procesarla directamente
+                    this.processSelectedSheet(result, result.sheets[0]);
+                }
             })
             .catch(error => {
                 console.error('Error al parsear Excel:', error);
                 statusDiv.innerHTML = `❌ Error: ${error.message}`;
                 statusDiv.style.color = '#F44336';
             });
+    },
+
+    showSheetSelector(excelData) {
+        const statusDiv = document.getElementById('uploadStatus');
+
+        // Buscar automáticamente la hoja "sanidad"
+        const sanidadSheet = excelData.sheets.find(sheet =>
+            sheet.toLowerCase().includes('sanidad')
+        );
+
+        // Si encontramos la hoja "sanidad", procesarla automáticamente
+        if (sanidadSheet) {
+            console.log(`🔍 Hoja "sanidad" encontrada: ${sanidadSheet}`);
+            statusDiv.innerHTML = `📄 Hoja "${sanidadSheet}" seleccionada automáticamente...`;
+            this.processSelectedSheet(excelData, sanidadSheet);
+            return;
+        }
+
+        // Si no existe, mostrar un selector
+        statusDiv.innerHTML = '';
+
+        const selectorHTML = `
+            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                <p><strong>📄 Selecciona la hoja a cargar:</strong></p>
+                <div id="sheetButtonsContainer" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+                    ${excelData.sheets.map(sheet => `
+                        <button class="btn btn-secondary" onclick="App.processSelectedSheet(App.currentExcelData, '${sheet}')">
+                            ${sheet}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        statusDiv.innerHTML = selectorHTML;
+        this.currentExcelData = excelData;
+    },
+
+    processSelectedSheet(excelData, sheetName) {
+        const statusDiv = document.getElementById('uploadStatus');
+        statusDiv.innerHTML = `⏳ Cargando datos de la hoja "${sheetName}"...`;
+
+        try {
+            const players = Parser.parseSheet(excelData.workbook, sheetName);
+
+            // Detectar déficits
+            const playersWithDeficits = players.map(p => {
+                p.detectedDeficits = Logic.detectDeficits(p.evaluationData || {});
+                return p;
+            });
+
+            // Agregar a estado
+            this.state.players = [...this.state.players, ...playersWithDeficits];
+            Storage.savePlayers(this.state.players);
+
+            // Actualizar UI
+            this.renderPlayersList();
+            this.renderPlayerSelect();
+
+            statusDiv.innerHTML = `✓ ${players.length} jugador${players.length > 1 ? 'es' : ''} cargados exitosamente desde la hoja "${sheetName}"`;
+            statusDiv.style.color = '#4CAF50';
+
+            this.updateStats();
+
+            // Limpiar datos temporales
+            this.currentExcelData = null;
+        } catch (error) {
+            console.error('Error al procesar hoja:', error);
+            statusDiv.innerHTML = `❌ Error: ${error.message}`;
+            statusDiv.style.color = '#F44336';
+        }
     },
 
     loadFromDrive() {
