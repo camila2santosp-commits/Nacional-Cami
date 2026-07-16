@@ -103,7 +103,7 @@ const Storage = {
         return data ? JSON.parse(data) : {
             googleDriveFolderId: '',
             youtubeChannelId: '',
-            youtubeApiKey: '',
+            youtubeApiKey: 'AIzaSyAAJmCPj_2tUzuvL7hSKLe7luC5PQpAvuc',
             googleAccessToken: ''
         };
     },
