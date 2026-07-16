@@ -207,36 +207,55 @@ body {
 }
 
 .tab-btn {
-    background: var(--blanco);
-    border: 2px solid var(--gris-medio);
+    background: var(--gris-100);
+    border: none;
     border-left: 4px solid transparent;
-    padding: var(--spacing-md);
-    border-radius: 8px;
+    padding: var(--spacing-lg) var(--spacing-md);
+    border-radius: 10px 10px 0 0;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    justify-content: flex-start;
+    gap: var(--spacing-md);
     font-family: var(--font-body);
-    font-size: 0.95rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    color: var(--gris-oscuro);
+    font-size: var(--text-base);
+    font-weight: 700;
+    transition: var(--transition);
+    color: var(--gris-600);
+    position: relative;
+    letter-spacing: 0.5px;
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: transparent;
+    transition: var(--transition);
 }
 
 .tab-btn:hover {
-    background: var(--gris-claro);
-    border-color: var(--navy-light);
+    background: var(--gris-200);
+    color: var(--navy-dark);
 }
 
 .tab-btn.active {
-    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-medium) 100%);
-    color: var(--blanco);
+    background: var(--blanco);
+    color: var(--navy-dark);
     border-left-color: var(--rojo-nacional);
-    box-shadow: 0 4px 8px rgba(10, 30, 77, 0.15);
+    box-shadow: var(--shadow-md);
+    font-weight: 700;
+}
+
+.tab-btn.active::after {
+    background: linear-gradient(90deg, var(--rojo-nacional) 0%, var(--navy-dark) 100%);
 }
 
 .tab-icon {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
 
 .tab-label {
@@ -271,21 +290,28 @@ body {
 }
 
 .tab-header {
-    border-bottom: 3px solid var(--navy-dark);
-    padding-bottom: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
+    border-bottom: none;
+    border-left: 6px solid var(--rojo-nacional);
+    padding: var(--spacing-lg);
+    padding-left: var(--spacing-2xl);
+    margin-bottom: var(--spacing-3xl);
+    background: linear-gradient(135deg, var(--navy-bg) 0%, transparent 100%);
+    border-radius: 8px;
 }
 
 .tab-header h2 {
     font-family: var(--font-title);
-    font-size: 2rem;
+    font-size: var(--text-4xl);
     color: var(--navy-dark);
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    font-weight: 700;
+    letter-spacing: 0.05em;
 }
 
 .tab-header p {
-    color: var(--gris-oscuro);
-    font-size: 0.95rem;
+    color: var(--gris-600);
+    font-size: var(--text-lg);
+    font-weight: 500;
 }
 
 /* ========================================
@@ -587,30 +613,42 @@ tbody tr:hover {
    ======================================== */
 
 .badge {
-    display: inline-block;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: 4px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-right: var(--spacing-xs);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: 20px;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    margin-right: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.badge:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .badge-verde {
-    background: rgba(76, 175, 80, 0.2);
-    color: #2E7D32;
-    border: 1px solid #4CAF50;
+    background: linear-gradient(135deg, var(--estado-verde) 0%, #059669 100%);
+    color: var(--blanco);
+    border: none;
 }
 
 .badge-amarillo {
-    background: rgba(255, 193, 7, 0.2);
-    color: #F57F17;
-    border: 1px solid #FFC107;
+    background: linear-gradient(135deg, var(--estado-amarillo) 0%, #D97706 100%);
+    color: var(--blanco);
+    border: none;
 }
 
 .badge-rojo {
-    background: rgba(244, 67, 54, 0.2);
-    color: #C62828;
-    border: 1px solid #F44336;
+    background: linear-gradient(135deg, var(--estado-rojo) 0%, #DC2626 100%);
+    color: var(--blanco);
+    border: none;
 }
 
 /* ========================================
