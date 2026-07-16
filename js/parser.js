@@ -3,7 +3,7 @@
 
 const Parser = {
 
-    // Parsea un archivo Excel
+    // Lee un archivo Excel y retorna información de las hojas disponibles
     parseExcelFile(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -12,12 +12,19 @@ const Parser = {
                 try {
                     const data = new Uint8Array(e.target.result);
                     const workbook = XLSX.read(data, { type: 'array' });
-                    const sheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[sheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-                    const players = this.convertToPlayers(jsonData);
-                    resolve(players);
+                    // Retornar información de todas las hojas
+                    const sheetsInfo = workbook.SheetNames.map(sheetName => ({
+                        name: sheetName,
+                        workbook: workbook
+                    }));
+
+                    resolve({
+                        file: file,
+                        workbook: workbook,
+                        sheets: workbook.SheetNames,
+                        sheetsInfo: sheetsInfo
+                    });
                 } catch (error) {
                     reject(error);
                 }
@@ -29,6 +36,18 @@ const Parser = {
 
             reader.readAsArrayBuffer(file);
         });
+    },
+
+    // Parsea una hoja específica del workbook
+    parseSheet(workbook, sheetName) {
+        try {
+            const worksheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+            const players = this.convertToPlayers(jsonData);
+            return players;
+        } catch (error) {
+            throw error;
+        }
     },
 
     // Convierte datos de Excel a estructura de jugador

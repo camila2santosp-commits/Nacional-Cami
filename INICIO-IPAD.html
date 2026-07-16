@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Planificador de Preventivos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0A1E4D 0%, #001845 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .logo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 32px;
+            color: #0A1E4D;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .steps {
+            text-align: left;
+            margin: 30px 0;
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #C8102E;
+        }
+
+        .step {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .step-number {
+            background: #0A1E4D;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+        }
+
+        .step-content h3 {
+            color: #0A1E4D;
+            margin-bottom: 5px;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .step-content p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            flex-direction: column;
+        }
+
+        .btn {
+            padding: 16px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0A1E4D 0%, #0A4DA6 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(10, 30, 77, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #0A1E4D;
+            border: 2px solid #0A1E4D;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f5f5;
+        }
+
+        .warning {
+            background: rgba(200, 16, 46, 0.1);
+            border: 1px solid #C8102E;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #A00D24;
+            font-size: 14px;
+        }
+
+        .note {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid #4CAF50;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #2E7D32;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">⚽ 🏥</div>
+
+        <h1>Planificador de Preventivos</h1>
+        <p class="subtitle">Club Nacional de Football</p>
+
+        <div class="note">
+            ✓ Todo funciona SIN conexión a internet
+            <br>✓ Datos guardados en tu iPad
+        </div>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Ya descargaste la carpeta</h3>
+                    <p>✓ Completado</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Haz clic en el botón abajo</h3>
+                    <p>Abre la aplicación principal</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>¡Listo!</h3>
+                    <p>Verás 3 jugadores de prueba y todo funcional</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="warning">
+            ⚠️ Nota: La primera vez tarda 2-3 segundos en cargar los datos de prueba
+        </div>
+
+        <div class="buttons">
+            <a href="index.html" class="btn btn-primary">
+                🚀 ABRIR APLICACIÓN
+            </a>
+            <a href="SETUP.md" class="btn btn-secondary">
+                📖 Ver instrucciones
+            </a>
+        </div>
+    </div>
+</body>
+</html>

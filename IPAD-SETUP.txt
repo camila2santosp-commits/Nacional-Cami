@@ -1,0 +1,40 @@
+PLANIFICADOR DE PREVENTIVOS - SETUP PARA iPad
+==============================================
+
+INSTRUCCIONES PARA ABRIR EN SAFARI (iPad):
+
+1. Descarga este archivo ZIP (nacional-cami-ipad.zip)
+   
+2. En tu iPad, ve a la app "Archivos" (Files)
+   
+3. Descomprime el ZIP:
+   - Toca el archivo nacional-cami-ipad.zip
+   - Selecciona "Descomprimir"
+   - Se crea una carpeta "nacional-cami-app"
+
+4. Abre Safari en tu iPad
+
+5. En Safari:
+   - Menú de Compartir (↗️ en la esquina inferior derecha)
+   - Selecciona "Leer sin conexión" o "Guardar PDF"
+   - O: Abre la app "Archivos" → toca "index.html" → "Abrir en Safari"
+
+6. ¡Listo! La app carga completamente:
+   - 3 jugadores de prueba
+   - Base de 41 ejercicios
+   - Generador de preventivos
+   - Exportar a PDF
+
+NOTAS:
+- La app funciona 100% offline (sin internet)
+- Todos los datos se guardan en Safari
+- Los videos de YouTube necesitarán conexión a internet
+
+PRIMERA PRUEBA:
+1. TAB "Datos" → Ver 3 jugadores cargados
+2. TAB "Preventivos" → Selecciona Verónica Lupi → Viernes → Media → Genera
+3. TAB "Ejercicios" → Ver 41 ejercicios disponibles
+4. Exporta a PDF para ver cómo se ve
+
+¿Preguntas? Revisa README.md o SETUP.md
+

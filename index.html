@@ -65,8 +65,14 @@
                         <div class="card">
                             <h3>📁 Google Drive</h3>
                             <p>Carga automática desde tu carpeta de Google Drive</p>
+                            <div style="background: rgba(10, 30, 77, 0.1); border: 1px solid #0A1E4D; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 14px; color: #0A1E4D;">
+                                <strong>📝 Requisitos:</strong><br>
+                                1. Conéctate con Google (botón en header)<br>
+                                2. Configura tu carpeta Drive en <strong>Config > Conectores</strong><br>
+                                3. Haz clic en "Cargar desde Drive"
+                            </div>
                             <button id="loadFromDriveBtn" class="btn btn-secondary" disabled>
-                                Cargar desde Drive
+                                📥 Cargar desde Drive
                             </button>
                             <div id="driveFilesList" class="files-list"></div>
                         </div>
@@ -75,6 +81,10 @@
                         <div class="card">
                             <h3>📤 Carga Local</h3>
                             <p>Sube un archivo Excel (.xlsx) con evaluaciones</p>
+                            <div style="background: rgba(76, 175, 80, 0.1); border: 1px solid #4CAF50; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 14px; color: #2E7D32;">
+                                ✓ La app buscará automáticamente la hoja llamada <strong>"sanidad"</strong><br>
+                                ✓ Si hay múltiples hojas, podrás elegir cuál cargar
+                            </div>
                             <div class="upload-area" id="uploadArea">
                                 <p>Arrastra un archivo Excel aquí o</p>
                                 <input type="file" id="fileInput" accept=".xlsx,.xls" class="file-input">
@@ -316,65 +326,85 @@
 
     <!-- MODALES -->
     <div id="exerciseModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="modalTitle">Nuevo Ejercicio</h2>
+        <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+            <span class="close" onclick="document.getElementById('exerciseModal').style.display='none'">&times;</span>
+            <h2 id="modalTitle" style="color: #0A1E4D; margin-bottom: 20px; border-bottom: 3px solid #C8102E; padding-bottom: 10px;">Nuevo Ejercicio</h2>
+
             <form id="exerciseForm">
-                <div class="form-field">
-                    <label>Nombre</label>
-                    <input type="text" id="exName" required>
+                <!-- Sección 1: Información básica -->
+                <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #0A1E4D; margin-bottom: 15px; font-size: 1.1rem;">01. Información del Ejercicio</h3>
+
+                    <div class="form-field" style="margin-bottom: 15px;">
+                        <label style="font-weight: 700; color: #0A1E4D;">Nombre del Ejercicio *</label>
+                        <input type="text" id="exName" placeholder="ej: Nordic Curl" required style="padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 1rem;">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-field">
+                            <label style="font-weight: 700; color: #0A1E4D;">Categoría *</label>
+                            <select id="exCategory" required style="padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 1rem;">
+                                <option value="">Selecciona...</option>
+                                <option value="Movilidad">🔄 Movilidad</option>
+                                <option value="Activación">⚡ Activación</option>
+                                <option value="Fuerza">💪 Fuerza</option>
+                                <option value="Pliometría-CEA">🚀 Pliometría-CEA</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label style="font-weight: 700; color: #0A1E4D;">Grupo Muscular *</label>
+                            <select id="exMuscle" required style="padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 1rem;">
+                                <option value="">Selecciona...</option>
+                                <option value="Tobillo">Tobillo</option>
+                                <option value="Isquiotibiales">Isquiotibiales</option>
+                                <option value="Cuádriceps">Cuádriceps</option>
+                                <option value="Aductores">Aductores</option>
+                                <option value="Glúteos">Glúteos</option>
+                                <option value="Cadera">Cadera</option>
+                                <option value="Psoas">Psoas</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                        <div class="form-field">
+                            <label style="font-weight: 700; color: #0A1E4D;">Deficits Aplicables</label>
+                            <input type="text" id="exDeficits" placeholder="ej: Nordic, Isquiotibiales" style="padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 0.95rem;">
+                            <small style="color: #666;">Separados por coma</small>
+                        </div>
+                        <div class="form-field">
+                            <label style="font-weight: 700; color: #0A1E4D;">Antecedentes Clínicos</label>
+                            <input type="text" id="exAntecedentes" placeholder="ej: Post-LCA, Aquiles" style="padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 0.95rem;">
+                            <small style="color: #666;">Separados por coma</small>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-field">
-                    <label>Categoría</label>
-                    <select id="exCategory" required>
-                        <option value="">Selecciona...</option>
-                        <option value="Movilidad">Movilidad</option>
-                        <option value="Activación">Activación</option>
-                        <option value="Fuerza">Fuerza</option>
-                        <option value="Pliometría-CEA">Pliometría-CEA</option>
-                    </select>
-                </div>
-                <div class="form-field">
-                    <label>Grupo Muscular</label>
-                    <select id="exMuscle" required>
-                        <option value="">Selecciona...</option>
-                        <option value="Tobillo">Tobillo</option>
-                        <option value="Isquiotibiales">Isquiotibiales</option>
-                        <option value="Cuádriceps">Cuádriceps</option>
-                        <option value="Aductores">Aductores</option>
-                        <option value="Glúteos">Glúteos</option>
-                        <option value="Cadera">Cadera</option>
-                        <option value="Psoas">Psoas</option>
-                    </select>
-                </div>
-                <div class="form-field">
-                    <label>Deficits Aplicables (separados por coma)</label>
-                    <input type="text" id="exDeficits" placeholder="ej: Nordic, Isquiotibiales">
-                </div>
-                <div class="form-field">
-                    <label>Antecedentes Aplicables (separados por coma)</label>
-                    <input type="text" id="exAntecedentes" placeholder="ej: Post-LCA, Aquiles">
-                </div>
-                <div class="form-field">
-                    <label>Video YouTube ID (opcional)</label>
-                    <input type="text" id="exYoutubeId" placeholder="dQw4w9WgXcQ">
-                    <small>Ej: dQw4w9WgXcQ (la parte después de watch?v=)</small>
-                </div>
-                <div class="form-field">
-                    <label>O busca un video en tu canal</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="exYoutubeSearch" placeholder="Busca por nombre (ej: 'Nordic Curl')">
-                        <button type="button" onclick="App.searchYoutubeVideos()" class="btn btn-secondary" style="flex-shrink: 0;">🔍 Buscar</button>
+
+                <!-- Sección 2: Video de YouTube -->
+                <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #C8102E;">
+                    <h3 style="color: #0A1E4D; margin-bottom: 15px; font-size: 1.1rem;">02. 🎬 Video de YouTube</h3>
+
+                    <p style="color: #666; margin-bottom: 15px; font-size: 0.95rem;">Opción A: Ingresa el ID del video directamente</p>
+                    <div class="form-field" style="margin-bottom: 15px;">
+                        <label style="font-weight: 700; color: #0A1E4D;">Video YouTube ID</label>
+                        <input type="text" id="exYoutubeId" placeholder="ej: dQw4w9WgXcQ" style="padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 0.95rem;">
+                        <small style="color: #666;">La parte después de watch?v= en YouTube</small>
+                    </div>
+
+                    <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
+
+                    <p style="color: #666; margin-bottom: 15px; font-size: 0.95rem;">Opción B: Busca un video en tu canal de YouTube</p>
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" id="exYoutubeSearch" placeholder="Busca por nombre (ej: 'Nordic Curl')" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 0.95rem;">
+                        <button type="button" onclick="App.searchYoutubeVideos()" class="btn btn-primary" style="flex-shrink: 0; padding: 12px 20px;">🔍 Buscar</button>
                     </div>
                     <div id="youtubeSearchResults" style="margin-top: 10px;"></div>
                 </div>
-                <div class="form-field">
-                    <label>SVG Diagrama (opcional)</label>
-                    <textarea id="exSvg" placeholder="<svg>...</svg>"></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('exerciseModal').style.display='none'">Cancelar</button>
+
+                <!-- Botones de acción -->
+                <div class="form-actions" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px;">
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('exerciseModal').style.display='none'" style="padding: 12px 24px;">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 12px 24px;">✓ Guardar Ejercicio</button>
                 </div>
             </form>
         </div>

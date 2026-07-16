@@ -1,0 +1,77 @@
+═══════════════════════════════════════════════════════════════
+    CÓMO ABRIR EN SAFARI (iPad) - 3 PASOS SUPER SIMPLES
+═══════════════════════════════════════════════════════════════
+
+YA HICISTE:
+✓ Descargaste la carpeta nacional-cami-app
+
+AHORA HACES ESTO:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PASO 1: Abre la app "Archivos" en tu iPad
+         (La app gris con una carpeta)
+
+PASO 2: Ve a la carpeta "nacional-cami-app"
+
+PASO 3: Toca el archivo "INICIO-IPAD.html"
+        → Elige "Abrir en Safari"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¡ESO ES!
+
+La app cargará en Safari con:
+  ✓ Header azul marino (Club Nacional)
+  ✓ Botón azul grande "ABRIR APLICACIÓN"
+  ✓ Haz clic en ese botón
+  ✓ ¡Ves todo funcional!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿QUÉ VAS A VER?
+
+1. Header: "Planificador de Preventivos - Club Nacional"
+2. Sidebar izquierdo con 4 tabs (Datos, Preventivos, Ejercicios, Config)
+3. TAB "Datos": 3 jugadores cargados
+   - Verónica Lupi (Mediocampista)
+   - Juan Pérez (Delantero)
+   - Carlos Rodríguez (Defensa)
+
+4. Puedes hacer clic en cualquier tab y explorar
+
+PRIMERA PRUEBA (opcional):
+→ TAB "Preventivos"
+→ Selecciona "Verónica Lupi"
+→ Selecciona "Viernes"
+→ Selecciona "Media"
+→ Botón "Generar"
+→ ¡Ve los ejercicios sugeridos automáticamente!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SI NO FUNCIONA:
+
+❌ "Safari no encuentra el archivo"
+→ Asegúrate de que abras "INICIO-IPAD.html", no "index.html"
+→ O abre directamente "index.html"
+
+❌ "Pantalla en blanco"
+→ Espera 3 segundos (está cargando)
+→ Recarga con el botón de actualizar (↻)
+
+❌ "Botones no funcionan"
+→ Prueba con otro navegador (Chrome, Firefox)
+→ O cierra Safari completamente y abre de nuevo
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+NOTAS IMPORTANTES:
+
+✓ La app funciona sin internet (offline)
+✓ Todos los datos se guardan en tu iPad
+✓ Puedes cargar tus propios archivos Excel
+✓ Exportar PDF funciona perfectamente
+✓ Videos de YouTube necesitan conexión a internet
+
+═══════════════════════════════════════════════════════════════
