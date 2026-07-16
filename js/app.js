@@ -40,6 +40,9 @@ const App = {
         // Configurar event listeners
         this.setupEventListeners();
 
+        // Cargar conectores guardados en los campos de config
+        this.loadConnectorsUI();
+
         // Renderizar vistas iniciales
         this.renderPlayersList();
         this.renderPlayerSelect();
@@ -250,7 +253,87 @@ const App = {
             return;
         }
 
-        alert('🔄 Cargando desde Google Drive...\n(Esta funcionalidad se completará cuando proporciones los conectores)');
+        this.showDriveFileSelector(folderId);
+    },
+
+    async showDriveFileSelector(folderId) {
+        const driveFilesList = document.getElementById('driveFilesList');
+        driveFilesList.innerHTML = '⏳ Buscando archivos Excel en Drive...';
+
+        try {
+            const files = await Auth.listExcelFilesInFolder(folderId);
+
+            if (files.length === 0) {
+                driveFilesList.innerHTML = '❌ No se encontraron archivos Excel en la carpeta de Drive configurada.';
+                return;
+            }
+
+            const filesHTML = files.map(file => `
+                <div style="background: white; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>${file.name}</strong><br>
+                        <small style="color: #666;">Modificado: ${new Date(file.modifiedTime).toLocaleDateString('es-UY')}</small>
+                    </div>
+                    <button class="btn btn-secondary" onclick="App.downloadAndProcessFile('${file.id}', '${file.name}')">
+                        Cargar
+                    </button>
+                </div>
+            `).join('');
+
+            driveFilesList.innerHTML = `
+                <div style="background: rgba(76, 175, 80, 0.1); border: 1px solid #4CAF50; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
+                    ✓ Se encontraron ${files.length} archivo${files.length > 1 ? 's' : ''} Excel
+                </div>
+                ${filesHTML}
+            `;
+        } catch (error) {
+            console.error('Error al listar archivos:', error);
+            driveFilesList.innerHTML = `❌ Error al buscar archivos: ${error.message}`;
+        }
+    },
+
+    async downloadAndProcessFile(fileId, fileName) {
+        const driveFilesList = document.getElementById('driveFilesList');
+        driveFilesList.innerHTML = `⏳ Descargando "${fileName}"...`;
+
+        try {
+            const arrayBuffer = await Auth.downloadExcelFile(fileId);
+            if (!arrayBuffer) {
+                driveFilesList.innerHTML = `❌ Error al descargar el archivo`;
+                return;
+            }
+
+            // Procesar el archivo descargado
+            driveFilesList.innerHTML = `⏳ Procesando "${fileName}"...`;
+
+            const data = new Uint8Array(arrayBuffer);
+            const workbook = XLSX.read(data, { type: 'array' });
+
+            const excelData = {
+                file: { name: fileName },
+                workbook: workbook,
+                sheets: workbook.SheetNames,
+                sheetsInfo: workbook.SheetNames.map(sheetName => ({
+                    name: sheetName,
+                    workbook: workbook
+                }))
+            };
+
+            // Usar la misma lógica de sheet selection que con archivos locales
+            if (excelData.sheets.length > 1) {
+                this.showSheetSelector(excelData);
+            } else {
+                this.processSelectedSheet(excelData, excelData.sheets[0]);
+            }
+
+            // Limpiar la lista de Drive después de procesar
+            setTimeout(() => {
+                driveFilesList.innerHTML = '';
+            }, 2000);
+        } catch (error) {
+            console.error('Error al procesar archivo:', error);
+            driveFilesList.innerHTML = `❌ Error al procesar el archivo: ${error.message}`;
+        }
     },
 
     // ========================================
@@ -666,6 +749,24 @@ const App = {
     // ========================================
     // CONFIGURACIÓN & BACKUP
     // ========================================
+
+    loadConnectorsUI() {
+        const connectors = Storage.getConnectors();
+
+        const driveFolderIdInput = document.getElementById('driveFolderId');
+        const youtubeChannelIdInput = document.getElementById('youtubeChannelId');
+        const youtubeApiKeyInput = document.getElementById('youtubeApiKey');
+
+        if (driveFolderIdInput && connectors.googleDriveFolderId) {
+            driveFolderIdInput.value = connectors.googleDriveFolderId;
+        }
+        if (youtubeChannelIdInput && connectors.youtubeChannelId) {
+            youtubeChannelIdInput.value = connectors.youtubeChannelId;
+        }
+        if (youtubeApiKeyInput && connectors.youtubeApiKey) {
+            youtubeApiKeyInput.value = connectors.youtubeApiKey;
+        }
+    },
 
     saveConnectors() {
         const driveId = document.getElementById('driveFolderId').value.trim();

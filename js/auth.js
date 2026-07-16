@@ -211,6 +211,59 @@ const Auth = {
                 order: 'date'
             }
         });
+    },
+
+    // Listar archivos Excel en una carpeta de Drive
+    async listExcelFilesInFolder(folderId) {
+        if (!folderId) {
+            console.error('ID de carpeta no proporcionado');
+            return [];
+        }
+
+        const result = await this.driveAPI('GET', {
+            path: 'files',
+            query: {
+                q: `'${folderId}' in parents and (mimeType='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' or mimeType='application/vnd.ms-excel') and trashed=false`,
+                spaces: 'drive',
+                fields: 'files(id, name, modifiedTime)',
+                pageSize: 50,
+                orderBy: 'modifiedTime desc'
+            }
+        });
+
+        return result?.files || [];
+    },
+
+    // Obtener contenido del archivo Excel de Drive
+    async downloadExcelFile(fileId) {
+        if (!this.accessToken) {
+            console.error('No hay token de autenticación');
+            return null;
+        }
+
+        try {
+            const response = await fetch(
+                `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${this.accessToken}`
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    this.logout();
+                    alert('Sesión expirada. Por favor, vuelve a conectar con Google.');
+                }
+                throw new Error(`Download error: ${response.status}`);
+            }
+
+            return await response.arrayBuffer();
+        } catch (error) {
+            console.error('Error descargando archivo:', error);
+            return null;
+        }
     }
 };
 
