@@ -102,7 +102,7 @@ const Storage = {
         const data = localStorage.getItem(this.PREFIX + 'connectors');
         return data ? JSON.parse(data) : {
             googleDriveFolderId: '',
-            youtubeChannelId: '',
+            youtubeChannelId: 'UC3VrwA8PcWrO9oNGafn8FmQ',
             youtubeApiKey: 'AIzaSyAAJmCPj_2tUzuvL7hSKLe7luC5PQpAvuc',
             googleAccessToken: ''
         };
